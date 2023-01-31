@@ -1,0 +1,9 @@
+CREATE DATABASE module_4;
+
+CREATE TABLE IF NOT EXISTS movies_table(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50) UNIQUE NOT NULL,
+	description TEXT,
+	duration INTEGER NOT NULL,
+	price INTEGER NOT NULL
+);
