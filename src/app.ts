@@ -1,7 +1,7 @@
 import { Application } from 'express';
 
 import { startDatabase } from './database';
-import { createMovie, listMovies, updateMovie } from './functions';
+import { createMovie, deleteMovie, listMovies, updateMovie } from './functions';
 import { checkMovieId, checkMovieName } from './middlewares';
 
 import express = require('express');
@@ -12,6 +12,7 @@ app.use(express.json());
 app.post('/movies', checkMovieName, createMovie);
 app.get('/movies', listMovies);
 app.patch('/movies/:id', checkMovieId, checkMovieName, updateMovie);
+app.delete('/movies/:id', checkMovieId, deleteMovie);
 
 app.listen('3000', async () => {
     await startDatabase();
