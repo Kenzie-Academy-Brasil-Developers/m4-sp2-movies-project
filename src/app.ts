@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.post('/movies', checkMovieName, createMovie);
 app.get('/movies', listMovies);
-app.patch('/movies/:id', updateMovie);
+app.patch('/movies/:id', checkMovieName, updateMovie);
 
 app.listen('3000', async () => {
     await startDatabase();
