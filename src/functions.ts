@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { QueryConfig } from 'pg';
 
 import { client } from './database';
 import { IMovie, IMoviePages, IMoviesRequest, MovieResult } from './interfaces';
@@ -94,4 +95,23 @@ export const updateMovie = async (req: Request, res: Response): Promise<Response
     const queryResult: MovieResult = await client.query(queryString);
 
     return res.status(200).json(queryResult.rows);
+};
+
+export const deleteMovie = async (req: Request, res: Response): Promise<Response> => {
+
+    const queryString: string = `
+        DELETE FROM
+            movies_table
+        WHERE
+            id = $1;
+    `;
+
+    const queryConfig: QueryConfig = {
+        text: queryString,
+        values: [req.params.id]
+    };
+
+    await client.query(queryConfig);
+
+    return res.status(204).send();
 };
