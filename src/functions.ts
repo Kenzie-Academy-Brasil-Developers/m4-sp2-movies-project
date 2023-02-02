@@ -75,3 +75,7 @@ export const listMovies = async (req: Request, res: Response): Promise<Response>
 
     return res.status(200).json(newDataResult);
 };
+
+export const updateMovie = async (req: Request, res: Response): Promise<Response> => {
+        
+}
