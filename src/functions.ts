@@ -44,7 +44,7 @@ export const listMovies = async (req: Request, res: Response): Promise<Response>
     const perPage: number = !Number(req.query.perPage) || Number(req.query.perPage) <= 0 || Number(req.query.perPage) > 5 ? 5 : Number(req.query.perPage);
     const page: number = !Number(req.query.page) || Number(req.query.page) <= 0 ? 0 : (Number(req.query.page) - 1) * perPage;
     const currentPage: number = !Number(req.query.page) || Number(req.query.page) <= 0 ? 1 : Number(req.query.page);
-    
+
     const sortResult: Array<string> = [...sortMoviesList(req, res)];
 
     const queryString: string = format(`
@@ -74,5 +74,24 @@ export const listMovies = async (req: Request, res: Response): Promise<Response>
 };
 
 export const updateMovie = async (req: Request, res: Response): Promise<Response> => {
-    return res.status(200).json();
+
+    if (req.body.id) {
+        return res.status(400).json({ message: 'No access to change id' });
+    }
+
+    const queryString: string = format(`
+        UPDATE
+            movies_table
+        SET(%I) = ROW(%L)
+        WHERE ID = %s
+        RETURNING *;
+    `,
+        Object.keys(req.body),
+        Object.values(req.body),
+        req.params.id
+    );
+
+    const queryResult: MovieResult = await client.query(queryString);
+
+    return res.status(200).json(queryResult.rows);
 };
