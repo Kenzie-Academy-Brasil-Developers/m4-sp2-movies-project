@@ -22,3 +22,16 @@ export const createMovie = async (req: Request, res: Response): Promise<Response
 
     return res.status(201).json(newIncludedMovie);
 };
+
+export const listMovies = async (req: Request, res: Response): Promise<Response> => {
+    const queryString: string = `
+        SELECT
+            *
+        FROM
+            movies_table
+    `;
+
+    const queryResult: MovieResult = await client.query(queryString);
+
+    return res.status(200).json(queryResult.rows);
+};
