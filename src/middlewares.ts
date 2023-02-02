@@ -25,6 +25,30 @@ export const checkMovieName = async (req: Request, res: Response, next: NextFunc
         }
 
     }
-    
+
+    return next();
+};
+
+export const checkMovieId = async (req: Request, res: Response, next: NextFunction) => {
+
+    const queryString: string = `
+        SELECT
+            *
+        FROM
+            movies_table
+        WHERE id = $1;
+    `;
+
+    const queryConfig: QueryConfig = {
+        text: queryString,
+        values: [req.params.id]
+    };
+
+    const queryResult: QueryResult = await client.query(queryConfig);
+
+    if (!queryResult.rowCount) {
+        return res.status(404).json({ message: 'Movie not found.' });
+    }
+
     return next();
 };
