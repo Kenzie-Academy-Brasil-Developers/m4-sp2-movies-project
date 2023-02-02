@@ -11,4 +11,11 @@ export interface IMovie extends IMoviesRequest {
     id: number;
 }
 
+export interface IMoviePages {
+    previousPage: string;
+    nextPage: string;
+    count: number;
+    data: IMovie[];
+}
+
 export type MovieResult = QueryResult<IMovie>;
